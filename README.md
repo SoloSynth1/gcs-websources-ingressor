@@ -17,7 +17,7 @@ Make a POST request to / (root), with JSON format as follows:
 ## Installation
 1. Add your GCP service account JSON key file to the project
 2. Edit `.config.example` so that `KeyFile` points to the key file, and `BucketName` points to your GCS bucket.
-3. Move `.config.example` to `.config`
+3. Rename `.config.example` to `.config`
 4. Build Docker image by running `docker build . --tag={your-tag-goes-here}`
 
 
