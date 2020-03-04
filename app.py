@@ -1,13 +1,20 @@
+import configparser
+
 from flask import Flask, request, jsonify
 
 from fetch import get_content
 from storage import GCPStorageAPI
 from buffer import byte2buffer
 
+CONFIG_LOCATION = ".config"
 app = Flask(__name__)
-KEY_FILE = "./key/credentials.json"
-BUCKET_NAME = "just-another-random-bucket"
-gcs = GCPStorageAPI(BUCKET_NAME, KEY_FILE)
+
+config = configparser.ConfigParser()
+config.read(CONFIG_LOCATION)
+
+key_file = config['DEFAULT']['KeyFile']
+bucket_name = config['DEFAULT']['BucketName']
+gcs = GCPStorageAPI(bucket_name, key_file)
 
 
 @app.route('/', methods=["POST"])
