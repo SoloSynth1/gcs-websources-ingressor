@@ -11,8 +11,8 @@ gcs = GCPStorageAPI(BUCKET_NAME, KEY_FILE)
 
 
 @app.route('/', methods=["POST"])
-def hello_world():
-    json_obj = request.json()
+def main():
+    json_obj = request.get_json()
     url = json_obj['uri']
     response, obj_name = get_content(url)
     response["newEntry"] = False
@@ -23,7 +23,9 @@ def hello_world():
         if not blob:
             response["newEntry"] = True
             buffer = byte2buffer(obj['content']['data'])
-            blob_path, public_uri = gcs.upload(buffer, blob_path)
+            content_type = obj['contentType']
+            blob_path, public_uri = gcs.upload(buffer, blob_path, content_type=content_type)
+        response[obj_name]['content'].pop('data', None)
     return jsonify(response)
 
 

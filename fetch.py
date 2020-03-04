@@ -14,8 +14,9 @@ def get_content(url):
         obj_name: {
             "uri": url
         }
-
     }
+    if r.headers and "Content-Type" in r.headers.keys():
+        fetched[obj_name]['contentType'] = r.headers['Content-Type']
     try:
         if r.status < 400:
             content_hash = hashlib.sha1(r.data).hexdigest()
@@ -24,7 +25,7 @@ def get_content(url):
                 "sha1sum": content_hash,
                 "data": r.data
             }
-        return fetched
+        return fetched, obj_name
     except:
         return fetched, obj_name
 
